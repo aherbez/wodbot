@@ -60,6 +60,7 @@ function rollDice(num, difficulty, reroll10s, havespec) {
     } else {
         finalStr += ` **TOTAL: ${total}**`;
     }
+    resultStrs.push(finalStr);
 
     return {
         total: total,
