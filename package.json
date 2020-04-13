@@ -1,0 +1,14 @@
+{
+  "name": "wodbot",
+  "version": "1.0.0",
+  "description": "a Discord bot for WoD gaming",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adrian Herbez",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.1.1"
+  }
+}
