@@ -6,7 +6,7 @@ const token = 'Njk5MDk3MjQ2MjU1NTQ2Mzg5.XpPe3A.LBktvhrI3iQ3lFcwpcrzw2bQ980';
 
 
 
-function rollDice(num, difficulty, reroll10s) {
+function rollDice(num, difficulty, reroll10s, havespec) {
     let resultStrs = [];
     resultStrs.push(`Rolling ${num} dice at difficulty of ${difficulty}`);
 
@@ -39,9 +39,11 @@ function rollDice(num, difficulty, reroll10s) {
                 if (reroll10s) {
                     reroll++;
                 } else {
-                    totalSuccesses++;
+                    // if using old rules, and have a speciality, add bonuses for 10s
+                    if (havespec) {
+                        totalSuccesses++;
+                    }
                 }
-                
             }
         }
         s += `${results.join(',')})`;
@@ -50,13 +52,13 @@ function rollDice(num, difficulty, reroll10s) {
         diceToRoll = reroll;
     }
 
-    resultStrs.push(`Total successes: ${totalSuccesses}, total fails: ${totalFails}`);
+    let finalStr = `Total successes: ${totalSuccesses}, total fails: ${totalFails}`;
     
     const total = totalSuccesses - totalFails;
     if (total < 0) {
-        resultStrs.push(`BOTCHED!`);
+        finalStr += ` **BOTCHED!**`;
     } else {
-        resultStrs.push(`RESULT: ${total}`);
+        finalStr += ` **TOTAL: ${total}**`;
     }
 
     return {
@@ -75,6 +77,23 @@ client.on('message', (msg) => {
     const parts = msg.content.split(' ');
 
     switch (parts[0]) {
+        case '!rollspec': {
+            const inputs = parts[1].split('@');
+            
+            const numDice = parseInt(inputs[0]);
+
+            if (isNaN(numDice) === false) {
+                let difficulty = 6;
+                if (inputs.length > 1) {
+                    difficulty = parseInt(inputs[1]);
+                }
+    
+                const result = rollDice(numDice, difficulty, false, true);
+            
+                msg.reply(result.text.join('\n'));
+            }
+        }
+        break;
         case '!roll': {
             const inputs = parts[1].split('@');
             
@@ -86,7 +105,7 @@ client.on('message', (msg) => {
                     difficulty = parseInt(inputs[1]);
                 }
     
-                const result = rollDice(numDice, difficulty, false);
+                const result = rollDice(numDice, difficulty, false, false);
             
                 msg.reply(result.text.join('\n'));
             }
