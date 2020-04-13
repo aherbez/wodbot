@@ -6,7 +6,7 @@ const token = 'Njk5MDk3MjQ2MjU1NTQ2Mzg5.XpPe3A.LBktvhrI3iQ3lFcwpcrzw2bQ980';
 
 
 
-function rollDice(num, difficulty) {
+function rollDice(num, difficulty, reroll10s) {
     let resultStrs = [];
     resultStrs.push(`Rolling ${num} dice at difficulty of ${difficulty}`);
 
@@ -21,7 +21,12 @@ function rollDice(num, difficulty) {
         let reroll = 0;
         for (let i=0; i < diceToRoll; i++) {
             let result = Math.floor(Math.random() * 10) + 1;
-            results.push(result);
+
+            if (result === 1 || result === 10) {
+                results.push(`**${result}**`)
+            } else {
+                results.push(result);
+            }
 
             if (result === 1) {
                 totalFails++;
@@ -31,7 +36,12 @@ function rollDice(num, difficulty) {
                 totalSuccesses++;
             }
             if (result > 9) {
-                reroll++;
+                if (reroll10s) {
+                    reroll++;
+                } else {
+                    totalSuccesses++;
+                }
+                
             }
         }
         s += `${results.join(',')})`;
@@ -65,18 +75,21 @@ client.on('message', (msg) => {
     const parts = msg.content.split(' ');
 
     switch (parts[0]) {
-        case 'roll': {
+        case '!roll': {
             const inputs = parts[1].split('@');
             
             const numDice = parseInt(inputs[0]);
-            let difficulty = 6;
-            if (inputs.length > 1) {
-                difficulty = parseInt(inputs[1]);
-            }
 
-            const result = rollDice(numDice, difficulty);
-        
-            msg.reply(result.text.join('\n'));
+            if (isNaN(numDice) === false) {
+                let difficulty = 6;
+                if (inputs.length > 1) {
+                    difficulty = parseInt(inputs[1]);
+                }
+    
+                const result = rollDice(numDice, difficulty, false);
+            
+                msg.reply(result.text.join('\n'));
+            }
         }
         break;
         default:
