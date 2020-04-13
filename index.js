@@ -78,6 +78,34 @@ client.on('message', (msg) => {
     const parts = msg.content.split(' ');
 
     switch (parts[0]) {
+        case '!wodhelp': {
+            let helpStrs = [];
+            helpStrs.push('How to use WoDBot:');
+            helpStrs.push('**!roll [numDice]@[difficulty]**: rolls that many dice at that difficulty (default 6)');
+            helpStrs.push('**!rollspec [numDice]@[difficulty]**: same as !roll, but will add an extra success for each 10 (use if you have a speciality');
+            helpStrs.push('**!rollnew [numDice]@[difficulty]**: uses the new WoD rules whering 10s are rerolled')
+
+
+            msg.reply(helpStrs.join('\n'));
+        }
+        break;
+        case '!rollnew': {
+            const inputs = parts[1].split('@');
+            
+            const numDice = parseInt(inputs[0]);
+
+            if (isNaN(numDice) === false) {
+                let difficulty = 6;
+                if (inputs.length > 1) {
+                    difficulty = parseInt(inputs[1]);
+                }
+    
+                const result = rollDice(numDice, difficulty, true, false);
+            
+                msg.reply(result.text.join('\n'));
+            }
+        }
+        break;
         case '!rollspec': {
             const inputs = parts[1].split('@');
             
