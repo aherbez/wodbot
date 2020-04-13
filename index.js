@@ -83,7 +83,7 @@ client.on('message', (msg) => {
             helpStrs.push('How to use WoDBot:');
             helpStrs.push('**!roll [numDice]@[difficulty]**: rolls that many dice at that difficulty (default 6)');
             helpStrs.push('**!rollspec [numDice]@[difficulty]**: same as !roll, but will add an extra success for each 10 (use if you have a speciality');
-            helpStrs.push('**!rollnew [numDice]@[difficulty]**: uses the new WoD rules whering 10s are rerolled')
+            helpStrs.push('**!rollnew [numDice]@[difficulty]**: uses the new WoD rules wherein 10s are rerolled')
 
 
             msg.reply(helpStrs.join('\n'));
