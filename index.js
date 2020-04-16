@@ -47,7 +47,7 @@ function rollDice(num, difficulty, reroll10s, havespec) {
                 }
             }
         }
-        s += `${results.join(',')})`;
+        s += `${results.join(', ')})`;
 
         resultStrs.push(s);
         diceToRoll = reroll;
