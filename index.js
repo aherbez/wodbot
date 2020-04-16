@@ -24,11 +24,11 @@ function rollDice(num, difficulty, reroll10s, havespec) {
 
             if (result === 1) {
                 totalFails++;
-                results.push(`*1*`);
+                results.push(`**1**`);
             } else if (result >= difficulty) {
                 totalSuccesses++;
                 if (result === 10) {
-                    results.push(`***${result}***`);
+                    results.push(`**${result}**`);
                 } else {
                     results.push(`**${result}**`);
                 }
