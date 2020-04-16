@@ -22,19 +22,20 @@ function rollDice(num, difficulty, reroll10s, havespec) {
         for (let i=0; i < diceToRoll; i++) {
             let result = Math.floor(Math.random() * 10) + 1;
 
-            if (result === 1 || result === 10) {
-                results.push(`**${result}**`)
+            if (result === 1) {
+                totalFails++;
+                results.push(`*1*`);
+            } else if (result >= difficulty) {
+                totalSuccesses++;
+                if (result === 10) {
+                    results.push(`***${result}***`);
+                } else {
+                    results.push(`**${result}**`);
+                }
             } else {
                 results.push(result);
             }
 
-            if (result === 1) {
-                totalFails++;
-            }
-
-            if (result >= difficulty) {
-                totalSuccesses++;
-            }
             if (result > 9) {
                 if (reroll10s) {
                     reroll++;
