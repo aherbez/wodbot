@@ -90,6 +90,26 @@ client.on('message', (msg) => {
             msg.reply(helpStrs.join('\n'));
         }
         break;
+
+        case '!rollsecret': {
+            const inputs = parts[1].split('@');
+            
+            const numDice = parseInt(inputs[0]);
+
+            if (isNaN(numDice) === false) {
+                let difficulty = 6;
+                if (inputs.length > 1) {
+                    difficulty = parseInt(inputs[1]);
+                }
+    
+                const result = rollDice(numDice, difficulty, false, false);
+            
+                // msg.reply(result.text.join('\n'));
+
+                msg.member.send(result.text.join('\n'));
+            }
+        }
+        break;
         case '!rollnew': {
             const inputs = parts[1].split('@');
             
